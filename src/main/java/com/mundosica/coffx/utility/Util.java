@@ -89,6 +89,9 @@ public final class Util {
      */
     public static String repeat(String in, int count) {
         String str = "";
+        if (count<0){
+            throw new IllegalArgumentException("The count must be zero or greater");
+        }
         for (int i = 0; i < count; i++) {
             str += in;
         }
@@ -104,7 +107,7 @@ public final class Util {
      */
     public static String[] repeatInArray(String in, int count) {
         if (count<1) {
-            return null;
+            return new String[0];
         }
         String strArray[] = new String[count];
         for (int i = 0; i < count; i++) {
