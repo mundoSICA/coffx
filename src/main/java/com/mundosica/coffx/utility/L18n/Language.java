@@ -9,7 +9,6 @@ package com.mundosica.coffx.utility.L18n;
  *
  * @author Inspiron I5558
  */
-@FunctionalInterface
 public interface Language {
     public String singular(String s);
     public String plural(String s);
