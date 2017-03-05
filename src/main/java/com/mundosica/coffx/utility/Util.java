@@ -1,21 +1,18 @@
 
 package com.mundosica.coffx.utility;
-
+import static com.mundosica.coffx.utility.Model.TableInfo.propertyClass;
 import java.util.*;
-
 /**
  * Clase Util se encarga de utilerias en gral.
- * 
+ *
  * @since 0.1
- * @author fitorec: Miguel Marcial 
+ * @author fitorec: Miguel Marcial
  * @author Edwin Snow
  */
 public final class Util {
-
     private Util() {
         // not instantiable
     }
-
     /**
      * Regresa true si el arreglo esta vacio
      *
@@ -26,7 +23,6 @@ public final class Util {
     public static boolean empty(Object[] array) {
         return array == null || array.length == 0;
     }
-
     /**
      * Regresa true si una colección esta vacia
      *
@@ -37,7 +33,9 @@ public final class Util {
     public static boolean empty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
-
+    public static boolean empty(String str) {
+        return str == null || str.length()== 0;
+    }
     /**
      * Joins Une con un delimitador a los elementos de un arreglo un String
      *
@@ -58,7 +56,6 @@ public final class Util {
         }
         return str;
     }
-
     /**
      * Joins Une con un delimitador a los elementos de un arreglo una colección
      *
@@ -79,7 +76,6 @@ public final class Util {
         }
         return str;
     }
-
     /**
      * Repite un texto de entrada un numero de veces indicadas.
      *
@@ -89,7 +85,7 @@ public final class Util {
      */
     public static String repeat(String in, int count) {
         String str = "";
-        if (count<0){
+        if (empty(in) || count<0){
             throw new IllegalArgumentException("The count must be zero or greater");
         }
         for (int i = 0; i < count; i++) {
@@ -97,7 +93,6 @@ public final class Util {
         }
         return str;
     }
-
     /**
      * Repite un texto de entrada un numero de veces indicadas en un arreglo.
      *
@@ -106,7 +101,7 @@ public final class Util {
      * @return strArray un arreglo con el resultado.
      */
     public static String[] repeatInArray(String in, int count) {
-        if (count<1) {
+        if (empty(in) || count<1) {
             return new String[0];
         }
         String strArray[] = new String[count];
@@ -115,7 +110,6 @@ public final class Util {
         }
         return strArray;
     }
-
     /**
      * Repite un str concatenado de un delimitador count veces
      *
@@ -127,7 +121,7 @@ public final class Util {
      * @return El String generado.
      */
     public static String joinAndRepeat(String str, String delimiter, int count) {
-        if(str == null || delimiter == null) {
+        if(empty(str) || empty(delimiter)) {
             throw new NullPointerException("str and delimiter cannot be null");
         }
         if(count<1){
@@ -135,9 +129,14 @@ public final class Util {
         }
         return repeat(str+delimiter, count -1)+str;
     }
-
+    /**
+     * Recibe un arreglo de Strings y devuelve un map, ideal para argumentos
+     *
+     * @param input arreglo de strings
+     * @return un Map de pares ordenados clave, valor
+     */
     public static Map<String, String> args(String ...input){
-        if( input==null || input.length%2 == 1){
+        if (empty(input) || input.length%2 == 1){
             throw new NullPointerException("input cannot be null");
         }
         Map<String, String> map = new HashMap();
@@ -148,8 +147,8 @@ public final class Util {
     }
     /**
      * Funciones echo, imprimen en la salida estandar.
-     * 
-     * @param map 
+     *
+     * @param map
      */
     public static void echo(Map map){
         map.forEach((k,v)->System.out.println(k + " : " + v));
@@ -163,11 +162,59 @@ public final class Util {
     public static void echo(Object o) {
         System.out.println(o.toString());
     }
-
+    /**
+     * Recibe un string del tipo "hola mundo" y devuelve "HolaMundo"
+     *
+     * @param str El String a Convertir
+     * @return el String en formato CamelCase
+     */
+    public static String camel(String str) {
+        if(empty(str)) {
+            return "";
+        }
+        String parts[] = str.replaceAll("_", " ").toLowerCase().split("\\s");
+        String out = "";
+        for (String part : parts) {
+            out += Character.toUpperCase(part.charAt(0)) + part.charAt(0);
+        }
+        return out;
+    }
+    /**
+     * Recibe un string en formato camelCase y lo devuelve en formato camel_case (underscore)
+     *
+     * @param str
+     * @param delimiter
+     * @return
+     **/
+    public static String under_score(String str) {
+        if (str == null || str.length()<1) {
+            return "";
+        }
+        String out = "" + Character.toLowerCase(str.charAt(0));
+        for (int i =1; i<str.length(); i++) {
+            char c = str.charAt(i);
+            if (Character.isUpperCase(c)) {
+                out += "_";
+                c = Character.toLowerCase(c);
+            }
+            out += c;
+        }
+        return out;
+    }
+    public static String under_score2(String str) {
+        if (str == null || str.length()<1) {
+            return "";
+        }
+        String out = Character.toLowerCase(str.charAt(0)) + str.substring(1);
+        return out.replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase();
+    }
     public static void main(String arg[]){
         Map<String, String> as = args(
-                "nombre","valor"
+                "nombre" , "valor"
         );
         echo(as);
+        echo(propertyClass("StringProperty"));
+        echo(under_score("HolaMundoFeliz"));
+        echo(under_score2("HolaMundoFeliz"));
     }
 }
