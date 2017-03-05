@@ -1,6 +1,6 @@
 
 package com.mundosica.coffx.utility;
-import static com.mundosica.coffx.utility.Model.TableInfo.propertyClass;
+import static com.mundosica.coffx.Datasource.TableInfo.propertyClass;
 import java.util.*;
 /**
  * Clase Util se encarga de utilerias en gral.
@@ -129,6 +129,7 @@ public final class Util {
         }
         return repeat(str+delimiter, count -1)+str;
     }
+
     /**
      * Recibe un arreglo de Strings y devuelve un map, ideal para argumentos
      *
@@ -145,6 +146,7 @@ public final class Util {
         }
         return map;
     }
+
     /**
      * Funciones echo, imprimen en la salida estandar.
      *
