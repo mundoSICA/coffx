@@ -10,12 +10,12 @@ package com.mundosica.coffx.utility.L18n;
  *
  * @author Inspiron I5558
  */
-public class EsLanguage {
+public class EsLanguage implements Language {
     public EsLanguage () {
         Inflector.addIregularPlural("user", "users");
     }
 
-    public static String singular(String pluralWord) {
+    public  String singular(String pluralWord) {
 	String singular = Inflector.iregularSingular(pluralWord);
         if (singular != null) {
             return singular;
@@ -27,19 +27,20 @@ public class EsLanguage {
 	return pluralWord.replaceAll("s$", "");
     }
 
-    public static String plural(String singularWord) {
+    public  String plural(String singularWord) {
         String plural = Inflector.iregularPlural(singularWord);
         if (plural != null) {
             return plural;
         }
         return singularWord
         //Las palabras que terminan en -Z, cambian a –CES
-	.replaceAll("z$", "ce")
-	//Las palabras que terminan en x,s y son Agudas 
-	.replaceAll("([áéíóú])([xs])$", "\1se")
+        .replaceAll("z$", "ce")
+        //Las palabras que terminan en x,s y son Agudas 
+        .replaceAll("([áéíóú])([xs])$", "\1se")
         // Si termina en r,l,n,d se agrega una e p.e. edad, edade
-        .replaceAll("([rlnd])$", "\1e")
+        .replaceAll("([rlnd])$", "\1e");
         // Si acaba en t,a,e,i...,j se agrega una s al final
-	.replaceAll("([taeiouj])$", "\1s");
+        //.replaceAll("([taeiouj])$", "\1s");
+        ///*/
     }
 }
