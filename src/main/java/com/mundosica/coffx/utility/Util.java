@@ -76,6 +76,10 @@ public final class Util {
         }
         return str;
     }
+
+    public static void join(Map map, String delimiter){
+        map.forEach((k,v)->System.out.println(k + " : " + v));
+    }
     /**
      * Repite un texto de entrada un numero de veces indicadas.
      *

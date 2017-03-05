@@ -47,14 +47,14 @@ public class BD {
  * @param namesAndValues el campo de configuración
  * @return el valor final de campo
  */
-	public static String config(String... namesAndValues) {
-                if(namesAndValues.length == 1) {
-                    return configVal(namesAndValues[0]);
-                }
-                Map<String, String> m = args(namesAndValues);
-                m.forEach((k,v) -> BD.setConfig(k,v));
-                return join(namesAndValues, ",");
-	}
+    public static String config(String... namesAndValues) {
+        if (namesAndValues.length == 1) {
+            return configVal(namesAndValues[0]);
+        }
+        Map<String, String> m = args(namesAndValues);
+        m.forEach((k,v) -> BD.setConfig(k,v));
+        return join(namesAndValues, ",");
+    }
 
 /**
  * Devuelve la variable de configuración con el nombre campo
