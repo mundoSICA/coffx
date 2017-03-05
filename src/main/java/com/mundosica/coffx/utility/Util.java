@@ -222,5 +222,7 @@ public final class Util {
         echo(propertyClass("StringProperty"));
         echo(under_score("HolaMundoFeliz"));
         echo(under_score2("HolaMundoFeliz"));
+        
+        echo(camel("hola_hellow"));
     }
 }

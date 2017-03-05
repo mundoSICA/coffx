@@ -7,7 +7,6 @@ package com.mundosica.coffx.utility.L18n;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  *
@@ -32,7 +31,7 @@ public class Inflector {
         }
         try {
             String className = "Es" + "Language";
-            lang = (Language) Class.forName(className).newInstance();
+            lang = (Language) Class.forName("com.mundosica.coffx.utility.L18n." + className).newInstance();
             return true;
         } catch(Exception e) {
             e.printStackTrace();
