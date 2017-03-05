@@ -12,11 +12,8 @@ import java.util.function.Predicate;
  * @author Inspiron I5558
  */
 public class Inflector {
-    Plural singular;
-    Plural plural;
+    Language lang;
     
-    public Inflector() {
-        Plural p = (String s) -> {return s + "s";};
-        p.eval("Juane");
+    public Inflector(String lang) {
     }
 }
