@@ -155,21 +155,21 @@ public class BD {
  *
  * @return status un string que contiene el edo de la conexión
  */
-	public static String status() {
-		String out =
-                        "host     : " + BD.config("host") +  "\n" +
-			"port     : " + BD.config("port") +  "\n" +
-			"Password : " + BD.config("password").replaceAll(".", "*") +  "\n" +
-			"user     : " + BD.config("user") +  "\n" +
-			"bd	  : " + BD.config("bd") +  "\n" +
-			"URL      : " + BD.url()  +  "\n\n";
-		if (BD.conection != null ) {
-			out += "Conexión abierta";
-		} else {
-			out += "Conexión cerrada";
-		}
-		return out;
-	}
+    public static String status() {
+	String out =
+            "host     : " + BD.config("host") +  "\n" +
+            "port     : " + BD.config("port") +  "\n" +
+            "Password : " + BD.config("password").replaceAll(".", "*") +  "\n" +
+            "user     : " + BD.config("user") +  "\n" +
+            "bd	  : " + BD.config("bd") +  "\n" +
+            "URL      : " + BD.url()  +  "\n\n";
+            if (BD.conection != null ) {
+		out += "Conexión abierta";
+            } else {
+		out += "Conexión cerrada";
+            }
+            return out;
+    }
 
 /**
  * Cierra la conexión en la base de datos
