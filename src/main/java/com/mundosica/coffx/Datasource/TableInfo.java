@@ -5,6 +5,7 @@
  */
 package com.mundosica.coffx.Datasource;
 
+import com.mundosica.coffx.Coffx;
 import static com.mundosica.coffx.utility.Util.*;
 import java.util.Map;
 //import javafx.beans.property.BooleanProperty;
@@ -17,22 +18,33 @@ public abstract class TableInfo {
     String type = "Mysql";
     String tableName = null;
     
-    public abstract boolean load();
-
-    public TableInfo(String tableName, String type){
-        this.type = type;
+    public abstract boolean load(String name);
+    public TableInfo() {
+    }
+    public TableInfo(String tableName){
+        this.type = Coffx.config("datasource");
+        this.tableName = tableName;
+        this.init();
+    }
+    
+    public TableInfo(String tableName, String datasource){
+        this.type = datasource;
         this.tableName = tableName;
         this.init();
     }
 
     
-    public boolean init(){
-        String className = camel(this.type + " table info");
+    public boolean init() {
+        String className = "com.mundosica.coffx.Datasource." + camel(this.type + " table info");
         try {
-            TableInfo info = (TableInfo) Class.forName(className).newInstance();
-            info.load();
-        } catch (Exception ex) {
-            echo("error");
+            /*TableInfo info = (TableInfo) ClassLoader
+                        .getSystemClassLoader()
+                        .loadClass(className).newInstance();*/
+           TableInfo info = (TableInfo) Class.forName(className).newInstance();
+            info.load(this.tableName);
+        } catch (Exception e) {
+            echo("No se pudo cargar la clase: " + className);
+            e.printStackTrace();
         }
         return true;
     }

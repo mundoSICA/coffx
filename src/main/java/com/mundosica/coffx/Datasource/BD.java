@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import static com.mundosica.coffx.utility.Util.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,6 +41,14 @@ public class BD {
  * La conexión.
  */
 	private static Connection conection;
+/**
+ * 
+ */
+    private static HashMap<String, TableMetadata> tables = new HashMap<String, TableMetadata>();
+
+/**
+ *  Almacena los metadatos de las tablas
+ */
 
 /**
  * Setea una variable de configuración
@@ -48,11 +57,13 @@ public class BD {
  * @return el valor final de campo
  */
     public static String config(String... namesAndValues) {
+        if (empty(namesAndValues)) {
+            return null;
+        }
         if (namesAndValues.length == 1) {
             return configVal(namesAndValues[0]);
         }
-        Map<String, String> m = args(namesAndValues);
-        m.forEach((k,v) -> BD.setConfig(k,v));
+        args(namesAndValues).forEach((k,v) -> BD.setConfig(k,v));
         return join(namesAndValues, ",");
     }
 
@@ -80,6 +91,12 @@ public class BD {
 		}
 	}
 
+/**
+ * Change the config to fieldName and value
+ * @param fieldName
+ * @param value
+ * @return 
+ */
 	private static String setConfig(String fieldName, String value) {
 		switch (fieldName.toLowerCase()) {
 			case "host":
@@ -185,4 +202,29 @@ public class BD {
             }
 	}
 
+/**
+ * Devuelve la meta información de una tabla.
+ * 
+ * @param tableName
+ * @return 
+ */
+    public static TableMetadata getTable(String tableName) {
+        if (!tables.containsKey(tableName)) {
+            addTable(tableName);
+        }
+        return tables.get(tableName);
+    }
+/**
+ * Agrega una nueva columna, si esta no existe.
+ * 
+ * @param column
+ * @return 
+ */
+    public static boolean addTable(String tableName) {
+        if (tables.containsKey(tableName)) {
+            return false;
+        }
+        //tables.put(column.name(), column);
+        return true;
+    }
 }

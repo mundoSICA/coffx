@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mundosica.coffx.utility.Model;
+package com.mundosica.coffx.Datasource;
 
+import com.mundosica.coffx.Coffx;
 import com.mundosica.coffx.Datasource.BD;
-import java.sql.Connection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -20,15 +21,19 @@ import static org.junit.Assert.*;
  */
 public class BDTest {
     
-    public BDTest() {
-    }
-    
     @BeforeClass
     public static void setUpClass() {
+        /*String result = Coffx.config(
+                "bd.user", "root",
+                "bd.password", "",
+                "bd.bd", "test"
+        );
+        Coffx.start();*/
     }
     
     @AfterClass
     public static void tearDownClass() {
+        BD.end();
     }
     
     @Before
@@ -69,7 +74,7 @@ public class BDTest {
     /**
      * Test of url method, of class BD.
      */
-    @Test
+    @Ignore
     public void testUrl() {
         System.out.println("url");
         String result = BD.url();
@@ -79,7 +84,7 @@ public class BDTest {
     /**
      * Test of status method, of class BD.
      */
-    @Test
+    @Ignore
     public void testStatus() {
         System.out.println("status");
         System.out.println(BD.status());
@@ -88,7 +93,7 @@ public class BDTest {
     /**
      * Test of end method, of class BD.
      */
-    @Test
+    @Ignore
     public void testEnd() {
         System.out.println("end");
         BD.end();

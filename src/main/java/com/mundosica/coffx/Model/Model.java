@@ -9,6 +9,8 @@ package com.mundosica.coffx.Model;
  *
  * @author Inspiron I5558
  */
-public class Model {
-    
+public abstract class Model {
+    public boolean load(){
+        return false;
+    }
 }

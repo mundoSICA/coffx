@@ -175,16 +175,17 @@ public final class Util {
      * @return el String en formato CamelCase
      */
     public static String camel(String str) {
-        if(empty(str)) {
+        if (empty(str)) {
             return "";
         }
         String parts[] = str.replaceAll("_", " ").toLowerCase().split("\\s");
         String out = "";
         for (String part : parts) {
-            out += Character.toUpperCase(part.charAt(0)) + part.charAt(0);
+            out += part.substring(0, 1).toUpperCase() + part.substring(1);
         }
         return out;
     }
+ 
     /**
      * Recibe un string en formato camelCase y lo devuelve en formato camel_case (underscore)
      *

@@ -5,7 +5,9 @@
  */
 package com.mundosica.coffx;
 
+import com.mundosica.coffx.Datasource.BD;
 import static com.mundosica.coffx.utility.Util.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +29,7 @@ public class Coffx {
         String os = cnf.get("os");
 	if ("".equals(os)) {
             String osCurrent = System.getProperty("os.name").toLowerCase();
-            if (osCurrent.indexOf("win") >= 0) {// Windows OS
+            if (osCurrent.contains("win")) {// Windows OS
 		os = "windows";
             } else {
 		os = "linux";
@@ -43,5 +45,19 @@ public class Coffx {
         }
         cnf.putAll(args(params));
         return join(params, ","); // data
+    }
+
+    public static Map<String, String> configByGroup(String group) {
+        Map<String, String> elements = new HashMap();
+        cnf.forEach((k,v) -> {
+            if (k.indexOf(group+".") == 0) {
+                elements.put(k.substring(group.length() +1), v);
+            }
+        });
+        return elements;
+    }
+
+    public static void start() {
+        configByGroup("bd").forEach((k,v)->BD.config(k,v));
     }
 }
