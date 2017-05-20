@@ -1,38 +1,34 @@
 package com.mundosica.coffx.utility.L18n;
 
 import static org.junit.Assert.*;
-import com.mundosica.coffx.utility.L18n.EsLanguage;
-
 import org.junit.Test;
 
 public class InflectorTest {
 
-	@Test
+	/*
 	public void test() {
-		singular();
 		plural();
+                singular();
 		irregularPlural();
-		irregularSingular();
-	}
+	}*/
 	
+        @Test
 	public void plural() {
-		System.out.println(Inflector.plural("amigo"));
-		//assertEquals(Inflector.plural("amigo"),"amigos");
+            assertEquals("amigos", Inflector.toPlural("amigo"));
 	}
-	
+ 
+	@Test
 	public void singular() {
-		assertEquals(Inflector.singular("Libros"),"Libro");
+		assertEquals(Inflector.toSingular("Libros"),"Libro");
 	}
-	
+ 
+        @Test
 	public void irregularPlural() {
-		Inflector.addIregularPlural("precuario", "precuarites");
-		assertEquals(Inflector.plural("precuario"),"precuarites");
-	}
-	
-	public void irregularSingular() {
-		Inflector.addIregularSingular("precuarites","precuario");
-		assertEquals(Inflector.singular("precuarites"),"precuario");
-		
+		Inflector.addIrregular("precuario", "precuarites");
+		assertEquals(Inflector.toPlural("precuario"),"precuarites");
+                //Inflector.addIrregular("user", "users");
+                assertEquals(Inflector.toPlural("user"), "users");
+                assertEquals(Inflector.toSingular("users"), "user");
 	}
 
 }

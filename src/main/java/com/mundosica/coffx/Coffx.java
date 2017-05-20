@@ -7,22 +7,20 @@ package com.mundosica.coffx;
 
 import com.mundosica.coffx.Datasource.BD;
 import static com.mundosica.coffx.utility.Util.*;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  *
- * @author Inspiron I5558
+ * @author fitorec - Miguel Angel Marcial
  */
 public class Coffx {
-    // Coffx.config("datasource", "mysql")
+    // Coffx.config("bd.type", "mysql")
     // Coffx.config("bd.username", "");
     // Coffx.config("bd.password", "");
      private static Map<String, String> cnf = args(
         "path", "",
         "locale", "ES_MX",
-        "os", "",
-        "datasource", "mysql"
+        "os", ""
     );
 
     public static String os() {
@@ -38,26 +36,23 @@ public class Coffx {
 	}
 	return os;
     }
-	
+
     public static String config(String ...params) {
-        if(params.length == 1) {
+        if (params.length == 1) {
             return cnf.get(params[0]);
         }
-        cnf.putAll(args(params));
+        args(params).forEach((k,v)-> {
+            if (k.indexOf("bd.") == 0) {
+                BD.config(k.substring("bd.".length()), v);
+            } else {
+                cnf.put(k, v);
+            }
+        });
         return join(params, ","); // data
     }
 
-    public static Map<String, String> configByGroup(String group) {
-        Map<String, String> elements = new HashMap();
-        cnf.forEach((k,v) -> {
-            if (k.indexOf(group+".") == 0) {
-                elements.put(k.substring(group.length() +1), v);
-            }
-        });
-        return elements;
-    }
 
     public static void start() {
-        configByGroup("bd").forEach((k,v)->BD.config(k,v));
+        // configByGroup("bd").forEach((k,v)->BD.config(k,v));
     }
 }

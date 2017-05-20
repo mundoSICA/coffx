@@ -23,13 +23,8 @@
  * OTRO TIPO DE ACCIONES EN EL SOFTWARE.
  *
  */
-package com.mundosica.coffx.Datasource;
+package com.mundosica.coffx.Model;
 
-import com.mundosica.coffx.Coffx;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -37,52 +32,36 @@ import static org.junit.Assert.*;
  *
  * @author @Fitorec <chanerec at gmail.com>
  */
-public class TableInfoTest {
+public class ModelTest {
     
-    public TableInfoTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+    public ModelTest() {
     }
 
     /**
-     * Test of load method, of class TableInfo.
+     * Test of load method, of class Model.
      */
     @Test
-    public void testLoad() {
-        Coffx.config(
-                "bd.user", "root",
-                "bd.password", "",
-                "bd.bd", "test"
-        );
-        Coffx.start();
-        TableInfo info = new TableInfo("users") {
-            @Override
-            public boolean load(String name) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        info.init();
-        System.out.println("load");
-        TableInfo instance = null;
-        //boolean expResult = false;
-        //boolean result = instance.load();
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+    public void testTableName() {
+        UsuarioModel usuario = new UsuarioModel();
+        assertEquals("usuarios", usuario.tableName());
+        //
+        userModel user = new userModel();
+        assertEquals("users", user.tableName());
+        //
+        EspecialModel cliente = new EspecialModel();
+        assertEquals("clientes", cliente.tableName());
+    }
+
+    /**
+     * Test of load method, of class Model.
+     */
+    @Test
+    public void testLoad_Object_String() {
     }
     
+}
+class UsuarioModel extends Model {
+}
+
+class userModel extends Model {
 }

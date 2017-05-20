@@ -7,6 +7,8 @@ package com.mundosica.coffx.utility.L18n;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  *
@@ -18,12 +20,7 @@ public class Inflector {
      * Contiene una lista de palabras irregulares en plural de la forma:
      *  pluralkey, singularValue
      */
-    private static Map<String, String> pluralIrregular = new HashMap();
-    /**
-     * Contiene una lista de palabras irregulares en singular de la forma:
-     *  Singularkey, pluralValue
-     */
-    private static Map<String, String> singularIrregular = new HashMap();
+    private static Map<String, String> irregularWords = new HashMap();
 
     public static boolean checkLoadLanguaje() {
         if (lang != null) {
@@ -39,18 +36,28 @@ public class Inflector {
         return false;
     }
 
-    public static String singular(String str) {
+    public static String toSingular(String plural) {
         if (!checkLoadLanguaje()) {
-            return str;
+            return plural;
         }
-        return lang.singular(str);
+        /////////////////////
+        for (Entry<String, String> entry : irregularWords.entrySet()) {
+            if (plural.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return lang.singular(plural);
     }
  
-    public static String plural(String str) {
+    public static String toPlural(String singular) {
         if (!checkLoadLanguaje()) {
-            return str;
+            return singular;
         }
-        return lang.plural(str);
+        String plural = irregularWords.get(singular);
+        if (plural == null) {
+            plural = lang.plural(singular);
+        }
+        return plural;
     }
    
     /**
@@ -59,34 +66,7 @@ public class Inflector {
      * @param pluralKey
      * @param SingularValue 
      */
-    public static void addIregularPlural(String pluralKey, String SingularValue) {
-        pluralIrregular.put(pluralKey, SingularValue);
-    }
-    /**
-     * Devuelve el valor de un plural en forma singular si este existe
-     * en el map de irregular
-     * 
-     * @param pluralKey
-     * @return El singular en irregular, null si no existe
-     */
-    public static String iregularPlural(String pluralKey) {
-        return pluralIrregular.get(pluralKey);
-    }
-     /**
-     * Agrega un singular para el cual su conversión a plural es irregular
-     * 
-     */
-    public static void addIregularSingular(String singularKey, String pluralValue) {
-        singularIrregular.put(singularKey, pluralValue);
-    }
-    /**
-     * Devuelve el valor de un singular en forma plural si este existe
-     * en el map de irregular
-     * 
-     * @param singularKey
-     * @return El singular en irregular, null si no existe
-     */
-    public static String iregularSingular(String singularKey) {
-        return singularIrregular.get(singularKey);
+    public static void addIrregular(String singular, String plural) {
+        irregularWords.put(singular, plural);
     }
 }

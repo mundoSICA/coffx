@@ -5,6 +5,7 @@
  */
 package com.mundosica.coffx;
 
+import com.mundosica.coffx.Datasource.BD;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
@@ -45,20 +46,8 @@ public class CoffxTest {
                 "bd.bd", "test"
         );
         assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of configByGroup method, of class Coffx.
-     */
-    @Test
-    public void testConfigByGroup() {
-        System.out.println("testConfigByGroup");
-        Map<String, String> expResult = new HashMap();
-        expResult.put("user", "root");
-        expResult.put("password", "");
-        expResult.put("bd", "test");
-        Map<String, String> result = Coffx.configByGroup("bd");
-        assertEquals(expResult, result);
+        Boolean ConexionEsperado = true;
+        assertEquals(ConexionEsperado, BD.initBD());
     }
 
     /**

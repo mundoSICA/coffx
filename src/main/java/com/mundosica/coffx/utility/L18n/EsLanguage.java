@@ -5,6 +5,7 @@
  */
 package com.mundosica.coffx.utility.L18n;
 
+import static com.mundosica.coffx.utility.Util.*;
 
 /**
  *
@@ -12,35 +13,29 @@ package com.mundosica.coffx.utility.L18n;
  */
 public class EsLanguage implements Language {
     public EsLanguage () {
-        Inflector.addIregularPlural("user", "users");
+        Inflector.addIrregular("user", "users");
     }
 
     public  String singular(String pluralWord) {
-	String singular = Inflector.iregularSingular(pluralWord);
-        if (singular != null) {
-            return singular;
-        }
-	pluralWord = pluralWord
+	String singularWord = pluralWord
             //Las palabras que terminan en -Z, cambian a –CES
             .replaceAll("ces$", "z")
             .replaceAll("es$", "");
-	return pluralWord.replaceAll("s$", "");
+	return singularWord.replaceAll("s$", "");
     }
 
     public  String plural(String singularWord) {
-        String plural = Inflector.iregularPlural(singularWord);
-        if (plural != null) {
-            return plural;
-        }
-        return singularWord
+        String pluralWord =  singularWord
         //Las palabras que terminan en -Z, cambian a –CES
         .replaceAll("z$", "ce")
         //Las palabras que terminan en x,s y son Agudas 
         .replaceAll("([áéíóú])([xs])$", "\1se")
         // Si termina en r,l,n,d se agrega una e p.e. edad, edade
         .replaceAll("([rlnd])$", "\1e");
-        // Si acaba en t,a,e,i...,j se agrega una s al final
-        //.replaceAll("([taeiouj])$", "\1s");
-        ///*/
+        // Si acaba en t,j,a,e,i..., se agrega una s al final
+        if (pluralWord.matches(".*[jtaeiou]$")) {
+            return pluralWord + "s";
+        }
+        return pluralWord;
     }
 }

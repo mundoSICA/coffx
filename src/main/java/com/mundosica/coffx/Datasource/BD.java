@@ -5,13 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import static com.mundosica.coffx.utility.Util.*;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Fitorec: Miguel Angel
  */
 public class BD {
+    /**
+     * Contiene el tipo de base de datos, por defecto MySQL
+     */
+    private static String type = "MySQL";
  /**
  * El <b>host</b> de la conexión
  */
@@ -41,10 +44,6 @@ public class BD {
  * La conexión.
  */
 	private static Connection conection;
-/**
- * 
- */
-    private static HashMap<String, TableMetadata> tables = new HashMap<String, TableMetadata>();
 
 /**
  *  Almacena los metadatos de las tablas
@@ -73,7 +72,7 @@ public class BD {
  * @param fieldName el nombre del campo
  * @return El valor del campo en caso de ser null devuelve un valor por defecto
  */
-	private static String configVal(String fieldName) {
+	public static String configVal(String fieldName) {
 		switch (fieldName.toLowerCase()) {
 			case "host":
 				return BD.host;
@@ -85,6 +84,8 @@ public class BD {
 				return BD.user;
 			case "password":
 				return BD.password;
+                        case "type":
+				return BD.type;
 			default:
 				echo("Campo incorrecto de configuración : " + fieldName);
 				return fieldName;
@@ -124,7 +125,7 @@ public class BD {
 	public static boolean initBD() {
 		if (BD.conection == null ) {
 			try {
-                            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
                             BD.conection = DriverManager.getConnection (
 				BD.url(),
 				user,
@@ -209,22 +210,19 @@ public class BD {
  * @return 
  */
     public static TableMetadata getTable(String tableName) {
-        if (!tables.containsKey(tableName)) {
-            addTable(tableName);
-        }
-        return tables.get(tableName);
+        return BDMetadata.get(tableName);
     }
 /**
  * Agrega una nueva columna, si esta no existe.
  * 
- * @param column
+ * @param tableName
  * @return 
  */
-    public static boolean addTable(String tableName) {
-        if (tables.containsKey(tableName)) {
-            return false;
-        }
-        //tables.put(column.name(), column);
-        return true;
+    public static boolean loadTableSchema(String tableName) {
+        return BDMetadata.put(tableName);
+    }
+   
+    public static Object query(String strQuery) {
+        return QueryManager.execute(strQuery);
     }
 }

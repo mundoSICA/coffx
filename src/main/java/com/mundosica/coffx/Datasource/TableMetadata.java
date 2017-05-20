@@ -1,40 +1,27 @@
 /*
- * Licencia MIT
- *
- * Copyright (c) 2017 @Fitorec <chanerec at gmail.com>.
- *
- * Se concede permiso, de forma gratuita, a cualquier persona que obtenga una
- * copia de este software y de los archivos de documentación asociados
- * (el "Software"), para utilizar el Software sin restricción, incluyendo sin
- * limitación los derechos a usar, copiar, modificar, fusionar, publicar,
- * distribuir, sublicenciar, y/o vender copias del Software, y a permitir a las
- * personas a las que se les proporcione el Software a hacer lo mismo, sujeto a
- * las siguientes condiciones:
- *
- * El aviso de copyright anterior y este aviso de permiso se incluirán en todas
- * las copias o partes sustanciales del Software.
- *
- * EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
- * IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN,
- * IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS
- * AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN,
- * DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O
- * CUALQUIER OTRO MOTIVO, QUE SURJA DE O EN CONEXIÓN CON EL SOFTWARE O EL USO U
- * OTRO TIPO DE ACCIONES EN EL SOFTWARE.
- *
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package com.mundosica.coffx.Datasource;
 
+import static com.mundosica.coffx.utility.Util.*;
 import java.util.HashMap;
+import java.util.Map;
+//import javafx.beans.property.BooleanProperty;
 
 /**
+ *
+ * @author fitorec: Miguel Marcial
  * 
- * @author @Fitorec <chanerec at gmail.com>
+ * Esta clase es una clase del tipo 'Factory' que básicamente se va encargando
+ * de obtener la información de las tablas.
  */
-public class TableMetadata {
-    HashMap<String, ColumnMetadata> columns = new HashMap<String, ColumnMetadata>();
-
+public abstract class TableMetadata {
+    private static String type = "Mysql";
+    String tableName = null;
+    private HashMap<String, ColumnMetadata> columns = new HashMap<String, ColumnMetadata>();
+    public abstract boolean load(String tableName);
 /**
  * Agrega una nueva columna, si esta no existe.
  * 
@@ -55,4 +42,56 @@ public class TableMetadata {
         }
         return null;
     }
+
+
+    /**
+     * Genera una tabla de equivalencias.
+     * 
+     * Por favor revise la documentacion de javaFX properties
+     * 
+     * @param columnType
+     * @url https://docs.oracle.com/javase/8/javafx/api/javafx/beans/property/package-tree.html
+     * @return 
+     */
+    public String defaultProperty(String columnType) {
+        Map<String, String> types = args(
+                "BOOL", "BooleanProperty",
+                "TINYINT", "BooleanProperty",
+                //
+                "SMALLINT","IntegerProperty",
+                "MEDIUMINT", "IntegerProperty",
+                "INT", "IntegerProperty",
+                "INTEGER", "IntegerProperty",
+                "BIGINT", "IntegerProperty",
+                //
+                "FLOAT", "DoubleProperty",
+                "DOUBLE", "DoubleProperty",
+                //
+                "VARCHAR", "StringProperty"
+        );
+        if (types.containsKey(columnType)) {
+            return types.get(columnType);
+        }
+        return null;
+    }
+
+    public static Class<?> propertyClass(String propertyName){
+        if (propertyName==null || propertyName.length() == 0) {
+            return null;
+        }
+        String className = propertyName;
+        try {
+            className = "javafx.beans.property." + propertyName;
+            return Class.forName(className);
+        } catch (Exception ex) {
+            echo("property no found: " + className);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getColumType(String s){
+        return s.toUpperCase();
+    }
+
 }

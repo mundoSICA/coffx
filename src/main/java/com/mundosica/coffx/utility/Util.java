@@ -1,6 +1,6 @@
 
 package com.mundosica.coffx.utility;
-import static com.mundosica.coffx.Datasource.TableInfo.propertyClass;
+import static com.mundosica.coffx.Datasource.TableMetadata.propertyClass;
 import java.util.*;
 /**
  * Clase Util se encarga de utilerias en gral.

@@ -26,6 +26,10 @@
 
 package com.mundosica.coffx.Datasource;
 
+import static com.mundosica.coffx.utility.Util.args;
+import static com.mundosica.coffx.utility.Util.empty;
+import java.util.Map;
+
 /**
  * 
  * @author @Fitorec <chanerec at gmail.com>
@@ -74,7 +78,7 @@ public class ColumnMetadata {
 	 * @param size la longitud del dato
 	 * @param position la posiciÃ³n de la columna en la tabla
 	 */
-	ColumnMetadata(String name, String type, int size, int position) {
+	public ColumnMetadata(String name, String type, int size, int position) {
 		this.name = name;
 		this.type = type;
 		this.size = size;
@@ -92,13 +96,21 @@ public class ColumnMetadata {
             if (params == null || params.length % 2 == 1) {
 		return c;
             }
-            for (int i = 0; i < params.length - 1; i += 2) {
-                    if (params[i] == null) {
+            args(params).forEach((k,v)->{
+                if(empty(k)) {
                     throw new IllegalArgumentException("Los nombre de los atributos no pueden ser null");
+                } else {
+                    c.set(k, v.toLowerCase());
                 }
-                String atributeName = params[i].toLowerCase(), atributeValue = params[i + 1];
+            });
+            /*for (int i = 0; i < params.length - 1; i += 2) {
+                    if (params[i] == null) {
+                        throw new IllegalArgumentException("Los nombre de los atributos no pueden ser null");
+                }
+                String atributeName = params[i].toLowerCase();
+                String atributeValue = params[i + 1];
                 c.set(atributeName, atributeValue);
-            }
+            }*/
             return c;
 	}
 
